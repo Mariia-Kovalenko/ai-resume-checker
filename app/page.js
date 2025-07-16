@@ -1,11 +1,11 @@
-import Image from "next/image";
+
 import React from "react";
-import MainSidebar from "@/components/sidebar/main-sidebar";
+import ResumeCheck from "../components/resume-check/resume-check";
 
 export default function Home() {
   return (
     <div className="">
-      Home page
+      <ResumeCheck />
     </div>
   );
 }

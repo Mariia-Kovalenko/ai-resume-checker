@@ -14,7 +14,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
 
     const sidebarWidth = collapsed ? "w-[60px]" : "w-[280px]";
 
-    return (
+  return (
         <aside
             className={`
                 h-screen bg-white border-r border-gray-200 flex flex-col
@@ -37,7 +37,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                     )}
                 </div>
                 <button
-                    className="p-1 border-1 border-gray-200 rounded-tr-md rounded-br-md bg-[var(--color-purple)] color-white transition w-[40px] h-[40px] absolute right-[-40px] flex items-center justify-center"
+                    className="p-1 border-1 border-gray-200 rounded-tr-md rounded-br-md bg-[var(--color-purple)] color-white transition w-[30px] h-[40px] absolute right-[-30px] flex items-center justify-center"
                     // className="ml-2 p-1 border-1 border-gray-200 rounded-md hover:bg-gray-100 transition"
                     onClick={() => setCollapsed((c) => !c)}
                     aria-label="Toggle sidebar"
@@ -174,13 +174,13 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                                 y2="10.078"
                                 gradientUnits="userSpaceOnUse"
                             >
-                                <stop stop-color="#000092" />
-                                <stop offset="1" stop-color="#FF00F3" />
+                                <stop stopColor="#000092" />
+                                <stop offset="1" stopColor="#FF00F3" />
                             </linearGradient>
                         </defs>
                     </svg>
-                </div>
-            </div>
+      </div>
+    </div>
         </aside>
-    );
+  );
 }

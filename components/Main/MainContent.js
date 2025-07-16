@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import MainSidebar from "@/components/sidebar/main-sidebar";
+import MainSidebar from "../sidebar/main-sidebar";
 
 export default function MainContent({ children }) {
   const [collapsed, setCollapsed] = useState(false);
