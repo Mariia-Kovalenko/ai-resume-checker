@@ -9,6 +9,7 @@
   --color-black: #2C2C2C;
   --color-purple: #716CE9;
   --color-light-purple: #e7e5f8;
+  --color-light-purple-hover: rgba(231, 229, 248, 0.749);
   --color-input-bg: #FDFDFE;
   --color-grey: #636871;
   --color-dark-purple: #6B4DBF;
@@ -34,6 +35,6 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--color-black);
   font-family: var(--font-inter);
 }
