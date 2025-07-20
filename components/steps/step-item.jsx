@@ -8,7 +8,7 @@ export default function StepItem({
     isLast,
 }) {
     return (
-        <div className="flex flex-col items-center flex-1 min-w-0">
+        <div className="flex flex-col items-center flex-1">
             <div className="flex items-center justify-center w-full relative h-[36px]">
                 {/* {!isLast && ( */}
                 <div

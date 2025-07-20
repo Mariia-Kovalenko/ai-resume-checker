@@ -9,20 +9,29 @@ import Image from 'next/image';
 import girlLaptop from '/assets/girl-laptop-emojii.png';
 
 interface ResumeUploaderProps {
+  file: File | null;
+  setFile: (file: File | null) => void;
+  jobTitle: string;
+  setJobTitle: (title: string) => void;
+  parsedText: string;
+  setParsedText: (text: string) => void;
   onFileChange?: (file: File | null) => void;
   onJobTitleChange?: (title: string) => void;
   onParsedText?: (text: string) => void;
 }
 
 const ResumeUploader: React.FC<ResumeUploaderProps> = ({
+  file,
+  setFile,
+  jobTitle,
+  setJobTitle,
+  parsedText,
+  setParsedText,
   onFileChange,
   onJobTitleChange,
   onParsedText,
 }) => {
-  const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
-  const [jobTitle, setJobTitle] = useState("");
-  const [parsedText, setParsedText] = useState("");
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const maxChars = 300;
@@ -104,9 +113,9 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({
         />
         <span>Upload File</span>
       </h2>
-      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[500px] max-w-full mx-auto mb-8">
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] max-w-[90%] md:w-[500px] mx-auto mb-8">
         <div
-          className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-colors duration-200 ${
+          className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-colors duration-200 hover:bg-[var(--color-light-purple-hover)] ${
             dragActive
               ? "border-[var(--color-purple)] bg-[var(--color-light-purple)]"
               : "border-[var(--color-purple)] bg-[transparent]"
@@ -161,12 +170,12 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({
         </div>
         {/* File preview card */}
         {file && (
-          <div className="flex items-center gap-4 border border-[var(--color-light-purple)] bg-[var(--background)] rounded-md px-4 py-3 mt-4">
-            <div className="w-[46px] h-[46px] border-1 rounded-md border-[var(--color-light-purple)] bg-white flex items-center justify-center">
+          <div className="flex items-center gap-4 border border-[var(--color-light-purple)] bg-[var(--background)] rounded-md px-2 md:px-4 py-3 mt-4">
+            <div className="w-[40px] h-[40px] sm:w-[46px] sm:h-[46px] border-1 shrink-0 rounded-md border-[var(--color-light-purple)] bg-white flex items-center justify-center">
               {getFileIcon(file.type)}
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="font-semibold text-black truncate">
+            <div className="flex-1">
+              <div className="font-semibold text-black truncate text-wrap text-sm md:text-md">
                 {file.name}
               </div>
               <div className="text-xs text-gray-500 mt-1">
@@ -231,13 +240,13 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({
           </div>
         </div>
         <button
-          className={`mt-8 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80 ${
+          className={`uppercase mt-8 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80 ${
             !file || !jobTitle ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={!file || !jobTitle}
           onClick={handleAnalyze}
         >
-          {loading ? "ANALYZING..." : "ANALYZE RESUME"}
+          {loading ? "ANALYZING..." : "ANALYZE FILE"}
         </button>
       </div>
     </div>
