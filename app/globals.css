@@ -38,3 +38,25 @@ body {
   color: var(--color-black);
   font-family: var(--font-inter);
 }
+
+.improvements-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #716CE9 #f4f4ff; /* thumb, track */
+}
+.improvements-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+.improvements-scrollbar::-webkit-scrollbar-track {
+  background: #f4f4ff;
+  border-radius: 8px;
+}
+.improvements-scrollbar::-webkit-scrollbar-thumb {
+  background: #716CE9;
+  border-radius: 8px;
+}
+.improvements-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #716CE9;
+}
+.improvements-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}

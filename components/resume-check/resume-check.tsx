@@ -4,6 +4,9 @@ import StepsGrid from "../steps/steps-grid";
 import ResumeUploader from "./resume-uploader";
 import AnalyzeResume from "./analyze-resume";
 import Loader from "./loader";
+import TipsBlock from "./TipsBlock";
+import ResumeFeedback from "./resume-feedback";
+import { resumeFeedbackMock } from "../../mocks/resumeFeedbackMock";
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -92,6 +95,9 @@ export default function ResumeCheck() {
         location: string;
     } | null>('analyzeData', null);
     const [parsedText, setParsedText] = usePersistedState<string>('parsedText', '');
+    const [resumeFeedback, setResumeFeedback] = usePersistedState<any>('resumeFeedback', null);
+    const [feedbackLoading, setFeedbackLoading] = useState(false);
+    const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
 
     const handleParsedText = async (parsedText: string) => {
@@ -139,6 +145,33 @@ export default function ResumeCheck() {
     });
   }
 
+    const handleReviewResume = async (form: any) => {
+      setFeedbackLoading(true);
+      setFeedbackError(null);
+      try {
+        const response = await fetch('/api/generate-feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ applicantInfo: form, parsedCV: parsedText, diffs: [] }),
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('[ResumeCheck] AI feedback error:', errorData);
+          setFeedbackError(errorData.error || 'Failed to generate feedback');
+          throw new Error('Failed to generate feedback');
+        }
+        const result = await response.json();
+        console.log('[ResumeCheck] AI feedback result:', result);
+        setResumeFeedback(result.data);
+        setStep(2);
+      } catch (e: any) {
+        setFeedbackError(e.message || 'Failed to generate feedback');
+        alert('There was an error generating feedback. Please try again.');
+      } finally {
+        setFeedbackLoading(false);
+      }
+    };
+
     useEffect(() => {
         console.log("step", step);
     }, [step]);
@@ -152,7 +185,12 @@ export default function ResumeCheck() {
             <StepsGrid steps={["Upload", "Job Profile", "Review"]} activeStep={step} />
             {step === 0 && (
                 loading ? (
-                    <Loader />
+                    <Loader 
+                        title="Analyzing Resume"
+                        text="We're analyzing your resume and creating a smart base resume template. This will help get all the information you need to apply for a job."
+                    >
+                        <TipsBlock />
+                    </Loader>
                 ) : (
                     <ResumeUploader
                         file={file}
@@ -166,15 +204,38 @@ export default function ResumeCheck() {
                 )
             )}
             {step === 1 && analyzeData && (
-                <AnalyzeResume
+                feedbackLoading ? (
+                  <Loader
+                    title="Generating Resume Feedback"
+                    text="We're reviewing your information and generating detailed suggestions to improve your CV. Please wait..."
+                  />
+                ) : (
+                  <AnalyzeResume
                     fullName={analyzeData.fullName}
                     desiredJob={analyzeData.desiredJob}
                     phone={analyzeData.phone}
                     email={analyzeData.email}
                     location={analyzeData.location}
-                    setStep={setStep}
-                />
+                    onReview={handleReviewResume}
+                  />
+                )
             )}
+            {step === 2 && (
+                feedbackError ? (
+                  <div className="bg-red-100 text-red-700 rounded-md p-6 text-center font-semibold max-w-lg mx-auto">
+                    <div className="mb-2 text-2xl">⚠️</div>
+                    <div>Sorry, there was an error generating your resume feedback.</div>
+                    <div className="mt-2 text-sm text-gray-600">{feedbackError}</div>
+                  </div>
+                ) : (
+                  resumeFeedback && <ResumeFeedback {...resumeFeedback} setStep={setStep} />
+                )
+            )}
+
+<Loader
+                    title="Generating Resume Feedback"
+                    text="We're reviewing your information and generating detailed suggestions to improve your CV. Please wait..."
+                  />
         </div>
     );
 }

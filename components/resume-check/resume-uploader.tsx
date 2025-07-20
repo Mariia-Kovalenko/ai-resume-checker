@@ -113,7 +113,7 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({
         />
         <span>Upload File</span>
       </h2>
-      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] max-w-[90%] md:w-[500px] mx-auto mb-8">
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] max-w-[90%] md:w-[600px] mx-auto mb-8">
         <div
           className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-colors duration-200 hover:bg-[var(--color-light-purple-hover)] ${
             dragActive

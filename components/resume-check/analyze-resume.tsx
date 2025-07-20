@@ -8,7 +8,7 @@ interface AnalyzeResumeProps {
     phone?: string;
     email?: string;
     location?: string;
-    setStep: (step: number) => void;
+    onReview: (form: FormState) => void;
 }
 
 interface FormState {
@@ -25,7 +25,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
     phone = "",
     email = "",
     location = "",
-    setStep,
+    onReview,
 }) => {
     const [form, setForm] = useState<FormState>({
         fullName,
@@ -64,7 +64,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
                 />
                 <span>Review you applicant info</span>
             </h2>
-            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[500px] max-w-full mx-auto mb-8">
+            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[600px] max-w-full mx-auto mb-8">
                 <h2 className="text-base md:text-lg font-bold text-left mb-1">
                     Your resume details
                 </h2>
@@ -189,6 +189,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
                     <button
                         type="button"
                         className="uppercase flex items-center justify-center gap-2 mt-4 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80"
+                        onClick={() => onReview(form)}
                     >
                         <svg
                             width="21"
@@ -214,7 +215,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
                     </button>
                     <button
                         className="underline text-sm cursor-pointer"
-                        onClick={() => setStep(0)}
+                        onClick={() => onReview(form)}
                     >
                         Back to upload
                     </button>
