@@ -7,6 +7,7 @@ import Loader from "./loader";
 import TipsBlock from "./TipsBlock";
 import ResumeFeedback from "./resume-feedback";
 import { resumeFeedbackMock } from "../../mocks/resumeFeedbackMock";
+import TestimonialsBlock from "./TestimonialsBlock";
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -208,7 +209,10 @@ export default function ResumeCheck() {
                   <Loader
                     title="Generating Resume Feedback"
                     text="We're reviewing your information and generating detailed suggestions to improve your CV. Please wait..."
-                  />
+                    progress={60}
+                  >
+                    <TestimonialsBlock />
+                  </Loader>
                 ) : (
                   <AnalyzeResume
                     fullName={analyzeData.fullName}
@@ -231,11 +235,6 @@ export default function ResumeCheck() {
                   resumeFeedback && <ResumeFeedback {...resumeFeedback} setStep={setStep} />
                 )
             )}
-
-<Loader
-                    title="Generating Resume Feedback"
-                    text="We're reviewing your information and generating detailed suggestions to improve your CV. Please wait..."
-                  />
         </div>
     );
 }
