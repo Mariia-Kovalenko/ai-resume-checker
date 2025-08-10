@@ -14,7 +14,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
 
     const sidebarWidth = collapsed ? "w-[60px]" : "w-[280px]";
 
-  return (
+    return (
         <aside
             className={`
                 h-screen bg-white border-r border-gray-200 flex flex-col
@@ -112,9 +112,9 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                     {!collapsed && (
                         <span className="text-nowrap flex grow-1 items-center justify-between gap-4">
                             Dashboard
-                            <span className="border-1 border-gray-200 rounded-md w-[20px] h-[20px] flex items-center justify-center text-[12px] text-xs text-gray-500">
-                                1
-                            </span>
+                            {/* <span className="border-1 border-gray-200 rounded-md w-[20px] h-[20px] flex items-center justify-center text-[12px] text-xs text-gray-500">
+                                0
+                            </span> */}
                         </span>
                     )}
                 </NavLink>
@@ -179,8 +179,8 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                             </linearGradient>
                         </defs>
                     </svg>
-      </div>
-    </div>
+                </div>
+            </div>
         </aside>
-  );
+    );
 }

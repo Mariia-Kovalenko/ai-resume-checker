@@ -9,6 +9,7 @@ interface AnalyzeResumeProps {
     email?: string;
     location?: string;
     onReview: (form: FormState) => void;
+    setStep: (step: number) => void;
 }
 
 interface FormState {
@@ -25,6 +26,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
     phone = "",
     email = "",
     location = "",
+    setStep,
     onReview,
 }) => {
     const [form, setForm] = useState<FormState>({
@@ -215,7 +217,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
                     </button>
                     <button
                         className="underline text-sm cursor-pointer"
-                        onClick={() => onReview(form)}
+                        onClick={() => setStep(0)}
                     >
                         Back to upload
                     </button>

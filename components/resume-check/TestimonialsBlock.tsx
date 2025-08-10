@@ -24,7 +24,7 @@ export default function TestimonialsBlock() {
       </div>
       {/* Testimonial Text */}
       <p className="text-center text-gray-700 text-sm md:text-base mb-4">
-        "After uploading my resume to AI Resume Checker, I started getting interview requests within days. The personalized feedback and suggestions made my CV stand out. I landed my dream job faster than I ever expected!"
+        &ldquo;After uploading my resume to AI Resume Checker, I started getting interview requests within days. The personalized feedback and suggestions made my CV stand out. I landed my dream job faster than I ever expected!&rdquo;
       </p>
       {/* User Info */}
       <div className="flex items-center gap-2">

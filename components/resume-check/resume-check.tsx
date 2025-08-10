@@ -8,6 +8,7 @@ import TipsBlock from "./TipsBlock";
 import ResumeFeedback from "./resume-feedback";
 import { resumeFeedbackMock } from "../../mocks/resumeFeedbackMock";
 import TestimonialsBlock from "./TestimonialsBlock";
+import ErrorBlock from "./ErrorBlock";
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,17 @@ function base64ToFile(base64: string, fileName: string, fileType: string): File 
   }
   return new File([u8arr], fileName, { type: mime });
 }
+
+const exampleDiff = [
+  {
+    remove: "Managed a portfolio of 50+ clients...",
+    place: "Built and retained 50+ client accounts via personalized outreach.",
+  },
+  {
+    remove: "Developed and executed sales strategies, resulting in a 25% increase in annual revenue.",
+    place: "Executed new strategies resulting in a 25% revenue boost",
+  }
+]
 
 function usePersistedFile(key: string) {
   const [file, setFileState] = useState<File | null>(null);
@@ -99,10 +111,12 @@ export default function ResumeCheck() {
     const [resumeFeedback, setResumeFeedback] = usePersistedState<any>('resumeFeedback', null);
     const [feedbackLoading, setFeedbackLoading] = useState(false);
     const [feedbackError, setFeedbackError] = useState<string | null>(null);
+    const [analyzeError, setAnalyzeError] = useState<string | null>(null);
 
 
     const handleParsedText = async (parsedText: string) => {
         setLoading(true);
+        setAnalyzeError(null);
         try {
             const response = await fetch('/api/analyze-resume', {
                 method: 'POST',
@@ -119,32 +133,20 @@ export default function ResumeCheck() {
             //     location: "Kyiv"
             // }
             if (!response.ok) {
-                throw new Error('Failed to analyze resume');
+                const errorData = await response.json().catch(() => ({}));
+                setAnalyzeError(errorData.error || 'Failed to analyze resume');
+                throw new Error(errorData.error || 'Failed to analyze resume');
             }
             const aiResult = await response.json();
             console.log('aiResult', aiResult);
             setAnalyzeData(aiResult.data);
-            // save to db
-            saveToDb(aiResult.data);
             setStep(1);
         } catch (error) {
-            // Optionally, handle error state here (e.g., show a message)
-            alert('There was an error analyzing your resume. Please try again.');
+            setAnalyzeError((error as Error)?.message || 'There was an error analyzing your resume. Please try again.');
         } finally {
             setLoading(false);
         }
     };
-
-    async function saveToDb(data: any) {
-      // Save to DB via API route
-      await fetch('/api/add-resume', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-  }
 
     const handleReviewResume = async (form: any) => {
       setFeedbackLoading(true);
@@ -153,7 +155,7 @@ export default function ResumeCheck() {
         const response = await fetch('/api/generate-feedback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ applicantInfo: form, parsedCV: parsedText, diffs: [] }),
+          body: JSON.stringify({ applicantInfo: form, parsedCV: parsedText, diffs: exampleDiff }), // TODO: pass real diffs if available
         });
         if (!response.ok) {
           const errorData = await response.json();
@@ -164,6 +166,16 @@ export default function ResumeCheck() {
         const result = await response.json();
         console.log('[ResumeCheck] AI feedback result:', result);
         setResumeFeedback(result.data);
+        // Save to DB after feedback is set
+        if (analyzeData && parsedText) {
+          await saveToDb({
+            ...analyzeData,
+            parsedText,
+            score: result.data.score,
+            strengths: result.data.strengths,
+            diffs: result.data.diffs,
+          });
+        }
         setStep(2);
       } catch (e: any) {
         setFeedbackError(e.message || 'Failed to generate feedback');
@@ -172,6 +184,19 @@ export default function ResumeCheck() {
         setFeedbackLoading(false);
       }
     };
+
+    async function saveToDb(data: any) {
+      const response = await fetch('/api/add-resume', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save to DB');
+      }
+      const result = await response.json();
+      console.log('[ResumeCheck] DB save result:', result);
+    }
 
     useEffect(() => {
         console.log("step", step);
@@ -193,15 +218,26 @@ export default function ResumeCheck() {
                         <TipsBlock />
                     </Loader>
                 ) : (
-                    <ResumeUploader
+                    <>
+                      {analyzeError && (
+                        <ErrorBlock 
+                          message="Sorry, there was an error analyzing your resume."
+                          details={analyzeError}
+                        />
+                      )}
+                      <ResumeUploader
                         file={file}
-                        setFile={setFile}
+                        setFile={async (f) => {
+                          setAnalyzeError(null);
+                          await setFile(f);
+                        }}
                         jobTitle={jobTitle}
                         setJobTitle={setJobTitle}
                         parsedText={parsedText}
                         setParsedText={setParsedText}
                         onParsedText={handleParsedText}
-                    />
+                      />
+                    </>
                 )
             )}
             {step === 1 && analyzeData && (
@@ -221,18 +257,18 @@ export default function ResumeCheck() {
                     email={analyzeData.email}
                     location={analyzeData.location}
                     onReview={handleReviewResume}
+                    setStep={setStep}
                   />
                 )
             )}
             {step === 2 && (
                 feedbackError ? (
-                  <div className="bg-red-100 text-red-700 rounded-md p-6 text-center font-semibold max-w-lg mx-auto">
-                    <div className="mb-2 text-2xl">⚠️</div>
-                    <div>Sorry, there was an error generating your resume feedback.</div>
-                    <div className="mt-2 text-sm text-gray-600">{feedbackError}</div>
-                  </div>
+                  <ErrorBlock 
+                    message="Sorry, there was an error generating your resume feedback."
+                    details={feedbackError}
+                  />
                 ) : (
-                  resumeFeedback && <ResumeFeedback {...resumeFeedback} setStep={setStep} />
+                  resumeFeedback && <ResumeFeedback {...resumeFeedback} analyzeData={analyzeData} parsedText={parsedText} setStep={setStep} />
                 )
             )}
         </div>

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "better-sqlite3": "^12.2.0",
     "docx-parser": "^0.2.1",
     "formidable": "^3.5.4",
@@ -17,7 +18,8 @@
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^5.3.93",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

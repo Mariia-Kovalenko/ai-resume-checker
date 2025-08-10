@@ -60,3 +60,18 @@ body {
 .improvements-scrollbar::-webkit-scrollbar-button {
   display: none;
 }
+
+
+@media (max-width: 768px) {
+  .sticky-shadow-right {
+    box-shadow: 4px 0 8px -2px rgba(0,0,0,0.08);
+    /* Adjust values as needed for your design */
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

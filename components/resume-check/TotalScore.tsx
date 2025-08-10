@@ -13,9 +13,9 @@ export default function TotalScore({ score }: TotalScoreProps) {
 
   return (
     <div className="mb-4 bg-[#FDFDFE] border-1 border-[var(--color-light-purple)] rounded-md p-4">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-lg font-semibold text-black">Total Score</span>
-        <span className={`text-lg font-semibold ${color === "bg-[var(--color-purple)]" ? "text-[var(--color-purple)]" : color === "bg-yellow-400" ? "text-yellow-500" : "text-red-500"}`}>{score}</span>
+      <div className="flex items-center justify-between mb-2 md:mb-4">
+        <span className="text-sm md:text-lg font-semibold text-black">Total Score</span>
+        <span className={`text-sm md:text-lg font-semibold ${color === "bg-[var(--color-purple)]" ? "text-[var(--color-purple)]" : color === "bg-yellow-400" ? "text-yellow-500" : "text-red-500"}`}>{score}</span>
       </div>
       <div className="w-full h-1 bg-gray-100 rounded-full">
         <div
