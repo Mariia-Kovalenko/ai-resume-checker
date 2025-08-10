@@ -1,5 +1,34 @@
 const Database = require('better-sqlite3');
-const db = new Database('data/resumes.db');
+const fs = require('fs');
+const path = require('path');
+
+// Decide database file path based on environment
+// - In Vercel/serverless, the filesystem is read-only except for /tmp
+// - In local/dev, keep using the repo path under data/
+const isProd = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+const repoDbPath = path.join(process.cwd(), 'data', 'resumes.db');
+const prodDir = '/tmp';
+const prodDbPath = path.join(prodDir, 'resumes.db');
+
+const dbFilePath = isProd ? prodDbPath : repoDbPath;
+
+// Ensure target directory exists (especially important for /tmp in serverless)
+try {
+  fs.mkdirSync(path.dirname(dbFilePath), { recursive: true });
+} catch {}
+
+// If running in prod and the db file does not exist yet, seed it from the repo copy if available
+if (isProd) {
+  try {
+    const existsInTmp = fs.existsSync(prodDbPath);
+    const hasSeed = fs.existsSync(repoDbPath);
+    if (!existsInTmp && hasSeed) {
+      fs.copyFileSync(repoDbPath, prodDbPath);
+    }
+  } catch {}
+}
+
+const db = new Database(dbFilePath);
 
 // Create table if not exists
 db.prepare(`
