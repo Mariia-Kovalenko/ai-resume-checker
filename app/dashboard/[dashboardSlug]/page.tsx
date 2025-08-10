@@ -2,9 +2,9 @@ import { getResumeById } from "../../../lib/resumes";
 import ResumeFeedback from "../../../components/resume-check/resume-feedback";
 import Link from "next/link";
 
-export default async function ResumePage({ params }: { params: { dashboardSlug: string } }) {
+export default async function ResumePage({ params }: { params: Promise<{ dashboardSlug: string }> }) {
     // Get the resume id from the URL
-    const resumeId = params.dashboardSlug;
+    const resumeId = (await params).dashboardSlug;
     // Fetch the resume from your DB (this can be an async call)
     const resume = await getResumeById(resumeId);
 
