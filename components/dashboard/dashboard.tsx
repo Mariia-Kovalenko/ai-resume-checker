@@ -22,7 +22,7 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
             key={resume.id}
             className="border-b border-[#E6E6FA] last:border-0 last:border-r"
         >
-            <td className="sticky left-0 bg-white z-10 sticky-shadow-right min-w-[180px] max-w-[250px] font-semibold py-3 px-4 border-r border-[#E6E6FA]">
+            <td className="sticky left-0 bg-white z-10 sticky-shadow-right min-w-[180px] max-w-[250px] font-semibold py-3 px-3 border-r border-[#E6E6FA]">
                 <div className="flex items-center gap-2">
                     <span className="inline-block w-8 h-8 rounded-md flex items-center justify-center">
                         <ResumeDoc />
@@ -32,7 +32,7 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
                     </span>
                 </div>
             </td>
-            <td className="min-w-[120px] py-3 px-4 whitespace-nowrap text-sm md:text-base">
+            <td className="min-w-[120px] py-3 px-3 whitespace-nowrap text-sm md:text-base">
                 {resume.createdAt
                     ? new Date(resume.createdAt).toLocaleDateString("en-US", {
                           year: "numeric",
@@ -41,10 +41,10 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
                       })
                     : ""}
             </td>
-            <td className="min-w-[120px] py-3 px-4 whitespace-nowrap">
+            <td className="min-w-[120px] py-3 px-3 whitespace-nowrap">
                 <StatusBadge status="draft" />
             </td>
-            <td className="min-w-[100px] py-3 px-4 whitespace-nowrap">
+            <td className="min-w-[100px] py-3 px-3 whitespace-nowrap">
                 <span
                     className={`inline-block px-[6px] py-[4px] min-w-[25px] text-center rounded-md text-[12px] md:text-sm font-semibold ${
                         resume.score < 50
@@ -57,7 +57,7 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
                     )}
                 </span>
             </td>
-            <td className="min-w-[100px] py-3 px-4 flex gap-2 whitespace-nowrap justify-center">
+            <td className="min-w-[100px] py-3 px-3 flex gap-2 whitespace-nowrap justify-center">
                 <Link
                     href={`/dashboard/${resume.id}`}
                     className="inline-flex items-center justify-center w-9 h-9 rounded-md border border-gray-200 hover:bg-gray-100"
@@ -131,19 +131,19 @@ export default function Dashboard() {
                     <table className="min-w-full border-collapse bg-white rounded-xl shadow-sm mt-4">
                         <thead>
                             <tr className="border-b border-[#E6E6FA]">
-                                <th className="sticky left-0 bg-white z-10 sticky-shadow-right rounded-tl-xl min-w-[180px] max-w-[250px] text-left py-3 px-4 font-medium text-gray-500 text-sm md:text-base border-r border-[#E6E6FA]">
+                                <th className="sticky left-0 bg-white z-10 sticky-shadow-right rounded-tl-xl min-w-[160px] max-w-[250px] text-left py-3 px-3 font-medium text-gray-500 text-sm md:text-base border-r border-[#E6E6FA]">
                                     Job title
                                 </th>
-                                <th className="min-w-[120px] text-left py-3 px-4 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
+                                <th className="min-w-[120px] text-left py-3 px-3 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
                                     Created
                                 </th>
-                                <th className="min-w-[120px] text-left py-3 px-4 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
+                                <th className="min-w-[120px] text-left py-3 px-3 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
                                     Status
                                 </th>
-                                <th className="min-w-[100px] text-left py-3 px-4 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
+                                <th className="min-w-[100px] text-left py-3 px-3 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">
                                     Score
                                 </th>
-                                <th className="min-w-[100px] py-3 px-4"></th>
+                                <th className="min-w-[100px] py-3 px-3 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -9,6 +9,9 @@ import ResumeFeedback from "./resume-feedback";
 import { resumeFeedbackMock } from "../../mocks/resumeFeedbackMock";
 import TestimonialsBlock from "./TestimonialsBlock";
 import ErrorBlock from "./ErrorBlock";
+import { analyzeResumeAction } from '../../app/actions/analyzeResumeAction';
+import { generateFeedbackAction } from '../../app/actions/generateFeedbackAction';
+import { addResumeAction } from '../../app/actions/addResumeAction';
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -118,28 +121,8 @@ export default function ResumeCheck() {
         setLoading(true);
         setAnalyzeError(null);
         try {
-            const response = await fetch('/api/analyze-resume', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ parsedText }),
-            });
-            // const mockResponse = {
-            //     fullName: "John Doe",
-            //     desiredJob: "Sales manager",
-            //     phone: "",
-            //     email: "email@email.com",
-            //     location: "Kyiv"
-            // }
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                setAnalyzeError(errorData.error || 'Failed to analyze resume');
-                throw new Error(errorData.error || 'Failed to analyze resume');
-            }
-            const aiResult = await response.json();
-            console.log('aiResult', aiResult);
-            setAnalyzeData(aiResult.data);
+            const aiResult = await analyzeResumeAction(parsedText);
+            setAnalyzeData(aiResult);
             setStep(1);
         } catch (error) {
             setAnalyzeError((error as Error)?.message || 'There was an error analyzing your resume. Please try again.');
@@ -152,28 +135,16 @@ export default function ResumeCheck() {
       setFeedbackLoading(true);
       setFeedbackError(null);
       try {
-        const response = await fetch('/api/generate-feedback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ applicantInfo: form, parsedCV: parsedText, diffs: exampleDiff }), // TODO: pass real diffs if available
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error('[ResumeCheck] AI feedback error:', errorData);
-          setFeedbackError(errorData.error || 'Failed to generate feedback');
-          throw new Error('Failed to generate feedback');
-        }
-        const result = await response.json();
-        console.log('[ResumeCheck] AI feedback result:', result);
-        setResumeFeedback(result.data);
+        const result = await generateFeedbackAction(form, parsedText, exampleDiff);
+        setResumeFeedback(result);
         // Save to DB after feedback is set
         if (analyzeData && parsedText) {
           await saveToDb({
             ...analyzeData,
             parsedText,
-            score: result.data.score,
-            strengths: result.data.strengths,
-            diffs: result.data.diffs,
+            score: result.score,
+            strengths: result.strengths,
+            diffs: result.diffs,
           });
         }
         setStep(2);
@@ -186,16 +157,11 @@ export default function ResumeCheck() {
     };
 
     async function saveToDb(data: any) {
-      const response = await fetch('/api/add-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
+      try {
+        await addResumeAction(data);
+      } catch {
         throw new Error('Failed to save to DB');
       }
-      const result = await response.json();
-      console.log('[ResumeCheck] DB save result:', result);
     }
 
     useEffect(() => {

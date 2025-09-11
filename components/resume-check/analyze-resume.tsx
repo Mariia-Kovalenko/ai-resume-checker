@@ -1,6 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import stars from "/assets/stars.png";
 import Image from "next/image";
+import { Stars } from '../icons';
 
 interface AnalyzeResumeProps {
     fullName?: string;
@@ -59,11 +60,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
     return (
         <div className="flex flex-col items-center justify-center gap-6">
             <h2 className="text-xl md:text-2xl font-bold text-center flex items-center justify-center gap-2">
-                <Image
-                    src={stars}
-                    alt="upload file"
-                    className="w-8 h-8 md:w-10 md:h-10"
-                />
+                <Stars />
                 <span>Review you applicant info</span>
             </h2>
             <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[600px] max-w-full mx-auto mb-8">
