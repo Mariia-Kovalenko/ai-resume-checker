@@ -27,8 +27,8 @@ Your task:
   - score (0-100)
   - date (e.g., 'April 3, 2025')
   - strengths (4-5 items, about resume structure, not candidate)
-  - diffs (up to 10, each with 'remove' and 'place' fields)
-Respond ONLY with valid JSON, no markdown or extra text.
+  - diffs (up to 5, each with 'remove' and 'place' fields)
+Respond ONLY with valid JSON, no markdown or extra text. Make sure the JSON is valid and complete, all tags are closed.
 `;
 
   // const prompt = `You are an expert resume assistant. Here is the original CV text:\n${parsedCV}\n\nHere are some example diffs / suggested improvements that you can take as example, do not use them as is, but use them as example to improve the CV:\n${JSON.stringify(diffs, null, 2)}\n\nPlease regenerate the full CV with improvements applied and return the result as a JSON object with the following fields: fullName (string), score (number, 0-100), date (string, format like 'April 3, 2025'), strengths (array of strings, min 4, max 5 items that highlight the most important strengths of the resume structure, not candidate), diffs (array of objects with 'remove' and 'place' string fields, maximum 10 items). Respond ONLY with valid JSON, no markdown or extra text.\n\nIMPORTANT: Only include diffs that improve the substance, clarity, or professionalism of the CV. Do NOT include diffs that are only typographical or formatting changes (such as capitalization, punctuation, or spacing).`;

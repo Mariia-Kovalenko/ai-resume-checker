@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import NavLink from "./nav-link";
 import Logo from "../logo/logo";
 
-export default function MainSidebar({ collapsed, setCollapsed }) {
+export default function MainSidebar({ collapsed, setCollapsed, handleNavClick }) {
     const [isMobile, setIsMobile] = React.useState(false);
     React.useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -81,7 +81,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
             </div>
             {/* Nav links */}
             <nav className="flex-1 flex flex-col gap-2 px-2 py-4">
-                <NavLink href="/" collapsed={collapsed}>
+                <NavLink href="/" collapsed={collapsed} onClick={handleNavClick}>
                     <span className="sidebar-icon">
                         <svg
                             width="22"
@@ -97,7 +97,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                         <span className="text-nowrap">Resume Check</span>
                     )}
                 </NavLink>
-                <NavLink href="/dashboard" collapsed={collapsed}>
+                <NavLink href="/dashboard" collapsed={collapsed} onClick={handleNavClick}>
                     <span className="sidebar-icon">
                         <svg
                             width="22"
@@ -118,7 +118,7 @@ export default function MainSidebar({ collapsed, setCollapsed }) {
                         </span>
                     )}
                 </NavLink>
-                <NavLink href="/cover-letter" collapsed={collapsed}>
+                <NavLink href="/cover-letter" collapsed={collapsed} onClick={handleNavClick}>
                     <span className="sidebar-icon">
                         <svg
                             width="22"

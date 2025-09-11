@@ -26,10 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       max_tokens: 300
     }); 
 
-    console.log('completion', completion);
-
     const aiText = completion.choices[0]?.message?.content || '';
-    console.log('aiText', aiText);
 
     function extractJsonFromMarkdown(markdown: string): any {
       const match = markdown.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
@@ -43,7 +40,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let data: any;
     try {
       data = extractJsonFromMarkdown(aiText);
-      console.log('data', data);
     } catch (e) {
       console.log('[error when parsing aiText]', e);
       return res.status(500).json({ error: 'Failed to parse AI response', aiText });

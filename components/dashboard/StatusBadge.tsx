@@ -24,7 +24,7 @@ const statusIcons = {
                 cy="7.5"
                 r="6.5"
                 stroke="#636871"
-                stroke-dasharray="2 2"
+                strokeDasharray="2 2"
             />
         </svg>
     ),
