@@ -20,7 +20,7 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
         <tr
             data-id={resume.id}
             key={resume.id}
-            className="border-b border-[#E6E6FA] last:border-0 last:border-r"
+            className="border-b border-[#E6E6FA] last:border-0"
         >
             <td className="sticky left-0 bg-white z-10 sticky-shadow-right min-w-[180px] max-w-[250px] font-semibold py-3 px-3 border-r border-[#E6E6FA]">
                 <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="px-4 py-8">
+        <div className="px-4 py-8 max-w-[1200px] mx-auto">
             <div className="pl-[20px]">
                 <h1 className="text-xl md:text-3xl font-bold mb-2">Dashboard</h1>
                 <p className="text-gray-500 mb-6 text-sm md:text-base">Here you can browse your resumes</p>
@@ -127,11 +127,11 @@ export default function Dashboard() {
             {error && <p className="text-red-500">{error}</p>}
             {!loading && resumes.length === 0 && <p>No resumes found.</p>}
             {!loading && resumes.length > 0 && 
-                <div className="overflow-x-auto w-full">
-                    <table className="min-w-full border-collapse bg-white rounded-xl shadow-sm mt-4">
+                <div className="overflow-x-auto w-full shadow-md rounded-xl">
+                    <table className="min-w-full border-collapse bg-white mt-0">
                         <thead>
                             <tr className="border-b border-[#E6E6FA]">
-                                <th className="sticky left-0 bg-white z-10 sticky-shadow-right rounded-tl-xl min-w-[160px] max-w-[250px] text-left py-3 px-3 font-medium text-gray-500 text-sm md:text-base border-r border-[#E6E6FA]">
+                                <th className="sticky left-0 bg-white z-10 sticky-shadow-right min-w-[160px] max-w-[250px] text-left py-3 px-3 font-medium text-gray-500 text-sm md:text-base border-r border-[#E6E6FA]">
                                     Job title
                                 </th>
                                 <th className="min-w-[120px] text-left py-3 px-3 font-medium text-gray-500 whitespace-nowrap text-sm md:text-base">

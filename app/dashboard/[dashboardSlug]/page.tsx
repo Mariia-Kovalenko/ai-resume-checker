@@ -31,7 +31,7 @@ export default async function ResumePage({
     return (
         <div>
             <Link
-                className="text-[var(--color-purple)] flex items-center gap-2 w-[90%] max-w-[90%] ml-10 md:ml-0 md:w-[600px] mt-8 mb-4 hover:underline transition-all duration-200"
+                className="text-[var(--color-purple)] flex items-center justify-center gap-2 w-[90%] max-w-[90%] mx-auto md:w-[600px] mt-8 mb-4 hover:underline transition-all duration-200"
                 href="/dashboard"
             >
                <ChevronLeft className="w-3 h-3" />
