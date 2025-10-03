@@ -4,3 +4,7 @@ export { default as Eye } from './Eye';
 export { default as ResumeDoc } from './ResumeDoc';
 export { default as ChevronLeft } from './ChevronLeft';
 export { default as Stars } from './Stars';
+export { default as DocumentIcon } from './DocumentIcon';
+export { default as MinusIcon } from './MinusIcon';
+export { default as PlusIcon } from './PlusIcon';
+export { default as TrashAlt } from './TrashAlt';
