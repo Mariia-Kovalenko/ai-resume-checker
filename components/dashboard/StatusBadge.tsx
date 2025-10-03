@@ -1,34 +1,16 @@
 import React from "react";
 
 interface StatusBadgeProps {
-    status: "draft" | "in progress" | "done";
+    status: string;
 }
 
 const statusStyles = {
-    draft: "bg-gray-50 text-gray-500 border border-dashed border-gray-300",
-    "in progress": "bg-yellow-50 text-[#D18109] border border-yellow-200",
-    done: "bg-green-50 text-green-700 border border-green-200",
+    analysed: "bg-yellow-50 text-[#D18109] border border-yellow-200",
+    cover_letter: "bg-green-50 text-green-700 border border-green-200",
 };
 
 const statusIcons = {
-    draft: (
-        <svg
-            width="14"
-            height="15"
-            viewBox="0 0 14 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <circle
-                cx="7"
-                cy="7.5"
-                r="6.5"
-                stroke="#636871"
-                strokeDasharray="2 2"
-            />
-        </svg>
-    ),
-    "in progress": (
+    analysed: (
         <svg
             width="14"
             height="15"
@@ -50,7 +32,7 @@ const statusIcons = {
             />
         </svg>
     ),
-    done: (
+    cover_letter: (
         <svg
             width="14"
             height="15"
@@ -78,18 +60,20 @@ const statusIcons = {
 };
 
 const statusLabels = {
-    draft: "Draft",
-    "in progress": "In Progress",
-    done: "Done",
+    analysed: "CV Analyzed",
+    cover_letter: "Cover letter",
 };
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => (
-    <span
-        className={`inline-flex items-center gap-[4px] p-[4px] rounded-md text-[12px] md:text-sm font-medium ${statusStyles[status]}`}
-    >
-        {statusIcons[status]}
-        {statusLabels[status]}
-    </span>
-);
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+    if (!(status in statusStyles)) return null;
+    return (
+        <span
+            className={`inline-flex items-center gap-[4px] p-[4px] rounded-md text-[12px] md:text-sm font-medium ${statusStyles[status as keyof typeof statusStyles]}`}
+        >
+            {statusIcons[status as keyof typeof statusIcons]}
+            {statusLabels[status as keyof typeof statusLabels]}
+        </span>
+    );
+};
 
 export default StatusBadge;

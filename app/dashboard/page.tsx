@@ -16,7 +16,7 @@ export default function DashboardPage() {
 function Loading() {
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[600px] max-w-full mx-auto mb-8">
+            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[650px] max-w-full mx-auto mb-8">
                 <div role="status" className="mx-auto mb-6">
                     <svg
                         aria-hidden="true"

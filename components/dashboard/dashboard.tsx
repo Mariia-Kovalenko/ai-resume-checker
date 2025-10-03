@@ -42,7 +42,7 @@ function ResumeRow({ resume, onDelete }: { resume: Resume, onDelete: (id: string
                     : ""}
             </td>
             <td className="min-w-[120px] py-3 px-3 whitespace-nowrap">
-                <StatusBadge status="draft" />
+                <StatusBadge status={resume.status || 'analysed'} />
             </td>
             <td className="min-w-[100px] py-3 px-3 whitespace-nowrap">
                 <span

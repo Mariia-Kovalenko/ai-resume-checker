@@ -53,6 +53,8 @@ const columnsToAdd = [
   { name: 'score', type: 'INTEGER' },
   { name: 'strengths', type: 'TEXT' },
   { name: 'diffs', type: 'TEXT' },
+  { name: 'coverLetter', type: 'TEXT' },
+  { name: 'status', type: 'TEXT' },
 ];
 
 const tableInfo = db.prepare("PRAGMA table_info(resumes)").all();

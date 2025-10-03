@@ -79,7 +79,7 @@ export default function StepItem({
                     )}
                 </div>
             </div>
-            <div className="mt-2 text-center text-[var(--color-black)] font-semibold text-base whitespace-nowrap">
+            <div className="mt-2 text-center text-[var(--color-black)] font-semibold text-xs md:text-base whitespace-nowrap">
                 {label}
             </div>
         </div>
