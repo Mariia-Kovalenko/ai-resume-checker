@@ -1,5 +1,5 @@
 import { getResumeById } from "../../../lib/resumes";
-import ResumeFeedback from "../../../components/resume-check/resume-feedback";
+import ResumeClientView from "../../../components/resume-check/ResumeClientView";
 import Link from "next/link";
 import { ChevronLeft } from "../../../components/icons";
 
@@ -37,12 +37,17 @@ export default async function ResumePage({
                <ChevronLeft className="w-3 h-3" />
                 Back to dashboard
             </Link>
-            <ResumeFeedback
+            <ResumeClientView
+                id={resume.id}
                 fullName={resume.fullName}
                 score={resume.score}
                 strengths={strengths}
                 diffs={diffs}
                 date={formattedDate}
+                parsedText={resume.parsedText}
+                desiredJob={resume.desiredJob}
+                coverLetter={resume.coverLetter}
+                analyzeData={resume}
             />
         </div>
     );

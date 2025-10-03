@@ -63,7 +63,7 @@ const AnalyzeResume: React.FC<AnalyzeResumeProps> = ({
                 <Stars />
                 <span>Review you applicant info</span>
             </h2>
-            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[600px] max-w-full mx-auto mb-8">
+            <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] md:w-[650px] max-w-full mx-auto mb-8">
                 <h2 className="text-base md:text-lg font-bold text-left mb-1">
                     Your resume details
                 </h2>

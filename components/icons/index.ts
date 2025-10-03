@@ -8,3 +8,4 @@ export { default as DocumentIcon } from './DocumentIcon';
 export { default as MinusIcon } from './MinusIcon';
 export { default as PlusIcon } from './PlusIcon';
 export { default as TrashAlt } from './TrashAlt';
+export { default as CopyIcon } from './CopyIcon';

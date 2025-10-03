@@ -118,7 +118,7 @@ export default function MainSidebar({ collapsed, setCollapsed, handleNavClick })
                         </span>
                     )}
                 </NavLink>
-                <NavLink href="/cover-letter" collapsed={collapsed} onClick={handleNavClick}>
+                {/* <NavLink href="/cover-letter" collapsed={collapsed} onClick={handleNavClick}>
                     <span className="sidebar-icon">
                         <svg
                             width="22"
@@ -133,7 +133,7 @@ export default function MainSidebar({ collapsed, setCollapsed, handleNavClick })
                     {!collapsed && (
                         <span className="text-nowrap">Cover letter</span>
                     )}
-                </NavLink>
+                </NavLink> */}
             </nav>
             {/* Footer */}
             <div className="mt-auto px-4 pb-6">

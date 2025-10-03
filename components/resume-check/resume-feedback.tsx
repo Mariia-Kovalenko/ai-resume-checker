@@ -16,6 +16,9 @@ interface ResumeFeedbackProps {
     };
     parsedText?: string;
     setStep?: (step: number) => void;
+    onGenerateCoverLetter?: () => void;
+    onShowCoverLetter?: () => void;
+    dashboardMode?: boolean;
 }
 import Image from "next/image";
 
@@ -34,10 +37,13 @@ export default function ResumeFeedback({
     analyzeData,
     parsedText,
     setStep,
+    onGenerateCoverLetter,
+    onShowCoverLetter,
+    dashboardMode,
 }: ResumeFeedbackProps) {
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] max-w-[90%] md:w-[600px] mx-auto mb-8">
+        <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 w-[90%] max-w-[90%] md:w-[650px] mx-auto mb-8">
             <h2 className="text-md md:text-xl font-medium text-center flex items-center justify-between gap-2 mb-6">
                 <span className="flex items-center gap-2 text-left text-sm md:text-lg">
                     <DocumentIcon />
@@ -67,10 +73,33 @@ export default function ResumeFeedback({
                 </div>
             )}
             {/* button */}
-            <button className="uppercase flex items-center justify-center gap-2 mt-4 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80">
-                <Stars />
-                generate cover letter
-            </button>
+            {dashboardMode ? (
+                onShowCoverLetter ? (
+                    <button
+                        className="uppercase flex items-center justify-center gap-2 mt-4 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80"
+                        onClick={onShowCoverLetter}
+                    >
+                        show cover letter
+                    </button>
+                ) : onGenerateCoverLetter ? (
+                    <button
+                        className="uppercase flex items-center justify-center gap-2 mt-4 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80"
+                        onClick={onGenerateCoverLetter}
+                    >
+                        <Stars />
+                        generate cover letter
+                    </button>
+                ) : null
+            ) : (
+                <button
+                    className="uppercase flex items-center justify-center gap-2 mt-4 w-full bg-[var(--color-purple)] text-white font-semibold rounded-md py-3 text-[14px] cursor-pointer transition-colors duration-200 hover:opacity-80"
+                    onClick={onGenerateCoverLetter}
+                    disabled={!onGenerateCoverLetter}
+                >
+                    <Stars />
+                    generate cover letter
+                </button>
+            )}
 
             {/* back to profile */}
             {setStep && (

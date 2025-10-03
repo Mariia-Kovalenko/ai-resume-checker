@@ -12,6 +12,8 @@ import ErrorBlock from "./ErrorBlock";
 import { analyzeResumeAction } from '../../app/actions/analyzeResumeAction';
 import { generateFeedbackAction } from '../../app/actions/generateFeedbackAction';
 import { addResumeAction } from '../../app/actions/addResumeAction';
+import CoverLetter from "./cover-letter";
+import { generateCoverLetterAction } from '../../app/actions/generateCoverLetterAction';
 
 function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -115,6 +117,8 @@ export default function ResumeCheck() {
     const [feedbackLoading, setFeedbackLoading] = useState(false);
     const [feedbackError, setFeedbackError] = useState<string | null>(null);
     const [analyzeError, setAnalyzeError] = useState<string | null>(null);
+    // Add state for cover letter loading
+    const [coverLetterLoading, setCoverLetterLoading] = useState(false);
 
 
     const handleParsedText = async (parsedText: string) => {
@@ -145,6 +149,7 @@ export default function ResumeCheck() {
             score: result.score,
             strengths: result.strengths,
             diffs: result.diffs,
+            status: 'analysed',
           });
         }
         setStep(2);
@@ -153,6 +158,33 @@ export default function ResumeCheck() {
         alert('There was an error generating feedback. Please try again.');
       } finally {
         setFeedbackLoading(false);
+      }
+    };
+
+    // Handler for generating cover letter from feedback step
+    const handleGenerateCoverLetter = async () => {
+      setCoverLetterLoading(true);
+      setFeedbackError(null);
+      try {
+        const coverLetter = await generateCoverLetterAction(parsedText, jobTitle);
+        setResumeFeedback((prev: any) => ({ ...prev, coverLetter }));
+        if (analyzeData && parsedText) {
+          await saveToDb({
+            ...analyzeData,
+            parsedText,
+            score: resumeFeedback.score,
+            strengths: resumeFeedback.strengths,
+            diffs: resumeFeedback.diffs,
+            coverLetter,
+            status: 'cover_letter',
+          });
+        }
+        setStep(3);
+      } catch (e: any) {
+        setFeedbackError(e.message || 'Failed to generate cover letter');
+        alert('There was an error generating the cover letter. Please try again.');
+      } finally {
+        setCoverLetterLoading(false);
       }
     };
 
@@ -174,7 +206,7 @@ export default function ResumeCheck() {
 
     return (
         <div>
-            <StepsGrid steps={["Upload", "Job Profile", "Review"]} activeStep={step} />
+            <StepsGrid steps={["Upload", "Job Profile", "Review", "Cover Letter"]} activeStep={step} />
             {step === 0 && (
                 loading ? (
                     <Loader 
@@ -228,14 +260,29 @@ export default function ResumeCheck() {
                 )
             )}
             {step === 2 && (
-                feedbackError ? (
+                coverLetterLoading ? (
+                  <Loader
+                    title="Generating Cover Letter"
+                    text="We're crafting a personalized cover letter tailored to your resume and job description. Please wait..."
+                    progress={80}
+                  />
+                ) : feedbackError ? (
                   <ErrorBlock 
                     message="Sorry, there was an error generating your resume feedback."
                     details={feedbackError}
                   />
                 ) : (
-                  resumeFeedback && <ResumeFeedback {...resumeFeedback} analyzeData={analyzeData} parsedText={parsedText} setStep={setStep} />
+                  resumeFeedback && <ResumeFeedback {...resumeFeedback} analyzeData={analyzeData} parsedText={parsedText} setStep={setStep} onGenerateCoverLetter={handleGenerateCoverLetter} />
                 )
+            )}
+            {step === 3 && resumeFeedback && (
+                <CoverLetter
+                  fullName={analyzeData?.fullName || ''}
+                  date={resumeFeedback.date}
+                  jobTitle={jobTitle}
+                  coverLetter={resumeFeedback.coverLetter || ''}
+                  onBack={() => setStep(2)}
+                />
             )}
         </div>
     );
